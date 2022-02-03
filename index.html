@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+</head> 
+
+<!--setting up the document with imports -->
+
+<body>
+
+  <div id="app">
+
+    <header>
+      <h1>{{website.name}}</h1>
+      <button v-on:click='showCheckout' v-if="cartItemCount != 0" >
+        {{cartItemCount}}
+        <span class="fas fa-cart-plus"> </span>
+        Checkout
+      </button>
+      
+    </header>
+<!--adding website title and a checkout button that is only visible when cart is not empty -->
+
+    <div v-if='website.showProduct'>
+    <h2>Sort by : </h2>
+    
+    <input type="radio" id="ascending" value="ascending" v-model="picked">
+    <label for="ascending">ascending</label>
+    <input type="radio" id="descending" value="descending" v-model="picked">
+    <label for="descending">descending</label>
+
+
+   
+    <select class="form-control" v-model="selected">
+      <option>subject</option>
+      <option>location</option>
+      <option>price</option>
+      <option>availability</option>
+      
+   </select>
+
+    <button  @click='sortedLessons(picked,selected)'>
+      <i class="fas fa-filter"></i>
+      Sort</button>
+
+      <!--sorting with asceding/descending parameters and user input for attribute to sort by -->
+
+  </div>
+  <input type="text" v-model="userSearch" placeholder="Search" />
+    <div v-if='website.showProduct' style="display: flex;flex-direction: row;flex-wrap:wrap">
+
+                           
+      
+      <div style="text-align: left;" v-for='lesson in searchResult'>
+       
+        <figure>
+          <img style="width: 200px;" v-bind:src="lesson.image">
+        </figure>
+        <h2 v-text="lesson.subject"></h2>
+        <p>Location: {{lesson.location}}</p>
+        <p>Price : {{lesson.price}}</p>
+        <p>Availabe spaces : {{lesson.space - cartCount(lesson.id)}}</p>
+
+        <button key="lesson.icon" @click='addItem(lesson)' :disabled='!canAdd(lesson)'>
+          <i class="lesson.icon"></i>
+          Add Lesson
+        </button>
+
+        <span v-if="lesson.space === 0">no spaces left!</span>
+        <span v-else-if="lesson.space - cartCount(lesson.id) < 3 ">only {{lesson.space - cartCount(lesson.id)}}
+          left!</span>
+        <span v-else>Buy now!</span>
+     
+
+          <!--spawning lessons from lessons.js, implementing search and add to cart button with checks of availability and lesson div visability -->
+
+
+      </div>
+    </div>
+
+
+
+    <div v-else>
+      <h1>Checkout</h1>
+
+      <div style="display: flex;flex-direction: row;flex-wrap:wrap">
+       
+        <h2>Cart content : </h2>
+        <ul v-for="(lesson, index) in cartContent(lessons)">
+          <p>{{lesson.subject}}</p>
+          <p>{{lesson.price}}</p>
+          <button @click='removeItem(this.index)'>Remove</button>
+        </ul>
+     
+      </div>
+
+      <h2>First name</h2>
+      <input id=nameInput type="text" v-model.trim="order.firstName" />
+
+      <h2>Last name</h2>
+      <input  type="text" v-model.trim="order.lastName" />
+
+      <h2>Phone number</h2>
+      <input id=numberInput  type="text" v-model.trim="order.number" />
+
+      <h2>Adress</h2>
+      <input v-model.trim="order.adress" />
+
+      <h2>City</h2>
+      <input  type="text" v-model.trim="order.city" />
+
+      <h2>Zip code</h2>
+      <input v-model.number="order.zip" type="number" />
+      <br>
+      <br>
+      <input type="checkbox" id="gift" value="true" v-model="order.gift" v-bind:true-value="order.sendGift"
+        v-bind:false-value="order.dontSendGift">
+
+      <label for="gift">Ship as a gift?</label>
+      <br>
+      <input type="radio" id="home" value="home" v-model="order.method">
+      <label for="home">Home</label>
+
+      <input type="radio" id="business" value="business" v-model="order.method">
+      <label for="business">Business</label>
+
+
+      <h2>Order Information</h2>
+      <p>First name: {{order.firstName}}</p>
+      <p>Last name: {{order.lastName}}</p>
+      <p>Phone number: {{order.number}}</p>
+      <p>Adress: {{order.adress}}</p>
+      <p>City: {{order.city}}</p>
+      <p>Zip code: {{order.zip}}</p>
+      <p>Gift: {{order.gift}}</p>
+      <p>Home/Business: {{order.method}}</p>
+
+
+      <button v-on:click="submitForm" v-if="inputCheck(order.firstName,order.number) == true">Place order</button>
+    </div>
+
+    <!--checkout page with a cart that has an option to delete items from it and order form and a button. Button only appears when user enters name 
+      and phone number in correct format. (deletion and checks are still bugged)  -->
+
+  </div>
+
+</body>
+
+
+<script>
+
+  let app = new Vue({
+    el: '#app',
+    data: {
+      userSearch: null,
+      search: "",
+      selected: '',
+      picked: null,
+      lesson: {},
+      website: {
+        name: "Courses",
+        showProduct: true,
+        
+      },
+      created: function(){
+        fetch('http://localhost:3000/lesson').then(
+          function (response) {
+            response.json().then(
+              function (json) {
+                console.log(JSON.stringify(json));
+                app.lesson = json;
+              });
+          });
+      },
+     
+
+      order: {
+        firstName: "",
+        lastName: "",
+        number: "",
+        adress: "",
+        city: "",
+        zip: "",
+        sendGift: "Send as a gift",
+        dontSendGift: "Do not send as a gift",
+        method: ""
+      },
+      cart: []
+
+    },
+    // setting up data 
+    methods: {
+      
+      inputCheck(nameInput,numberInput){
+        var letters = /^[A-Za-z]+$/;
+        var numbers = /^[0-9]*$/;
+        var characters = /\W|_/g;
+        if(nameInput.match(numbers) || !nameInput.match(letters) || nameInput == null && numberInput.match(letters) || !numberInput.match(numbers) || numberInput == null || nameInput.match(characters) ) {
+          return false;
+        
+        }else{
+          return true;
+        }
+      }, // method to check users name and number input
+      
+      addItem(lesson) {
+        this.cart.push(lesson.id);
+      }, 
+      removeItem(index){
+        this.cart.splice(index, 1);
+      }, // adding and removing items from cart
+      showCheckout() {
+        this.website.showProduct = this.website.showProduct ? false : true;
+      }, // method to show or hide checkout
+      submitForm() {
+        { alert("Order submitted!") }
+      },
+      canAdd(lesson) {
+        return lesson.space > this.cartCount(lesson.id);
+      }, // check if its allowed to add more lessons to the cart
+      cartCount(id) {
+        let count = 0;
+        for (let i = 0; i < this.cart.length; i++) {
+          if (this.cart[i] === id) {
+            count++;
+
+          }
+        }
+        return count;
+      }, // counting of total lessons in the cart
+      cartContent(lessons){
+        let list=[];
+        for(let x = 0; x<lessons.length;x++){
+          for(let i =0; i<this.cart.length; i++){
+            if(this.cart[i] === lessons[x].id){
+              list.push(lessons[x])
+              
+            }
+          }
+      }
+       return list;
+      }, // method to get contents of the cart
+  
+     
+
+      sortedLessons(picked,selected){
+        if(selected == "price"){
+          if(picked == "ascending"){
+        function compare(a,b){
+          if(a.price > b.price) return 1;
+          if(a.price < b.price) return -1;
+          return 0; 
+        }
+      }else{
+        function compare(a,b){
+          if(a.price > b.price) return -1;
+          if(a.price < b.price) return 1;
+          return 0; 
+        }
+       
+      }
+      return this.lessons.sort(compare);
+      }else if(selected == "subject"){
+        if(picked == "ascending"){
+          function compare(a,b){
+          let fa = a.subject.toLowerCase(), fb = b.subject.toLowerCase();
+          if (fa < fb) return -1
+			    if (fa > fb) return 1
+			    return 0;
+          }
+          
+        }else{
+          function compare(a,b){
+          let fa = a.subject.toLowerCase(), fb = b.subject.toLowerCase();
+          if (fa < fb) return 1
+			    if (fa > fb) return -1
+			    return 0;
+        }
+      }
+      return this.lessons.sort(compare);
+    }else if(selected == "location"){
+      if(picked == "ascending"){
+          function compare(a,b){
+          let fa = a.location.toLowerCase(), fb = b.location.toLowerCase();
+          if (fa < fb) return -1
+			    if (fa > fb) return 1
+			    return 0;
+          }
+          
+        }else{
+          function compare(a,b){
+          let fa = a.location.toLowerCase(), fb = b.location.toLowerCase();
+          if (fa < fb) return 1
+			    if (fa > fb) return -1
+			    return 0;
+        }
+      }
+      return this.lessons.sort(compare);
+    }else if(selected == "availability"){
+          if(picked == "ascending"){
+        function compare(a,b){
+          if(app.cartCount(a.id) > app.cartCount(b.id)) return -1;
+          if(app.cartCount(a.id) < app.cartCount(b.id)) return 1;
+          return 0; 
+        }
+      }else{
+        function compare(a,b){
+          if(app.cartCount(a.id) > app.cartCount(b.id)) return 1;
+          if(app.cartCount(a.id) < app.cartCount(b.id)) return -1;
+          return 0; 
+        }
+       
+      }
+      return this.lessons.sort(compare);
+      }
+
+    }}, // lesson sorting 
+    computed: {
+      cartItemCount() {
+        return this.cart.length;
+      }, //to check the size of the cart
+     
+      searchResult(){
+      if(this.userSearch){
+      return this.lessons.filter((item)=>{
+        return this.userSearch.toLowerCase().split(' ').every(v => item.subject.toLowerCase().includes(v)) ||  this.userSearch.toLowerCase().split(' ').every(v => item.location.toLowerCase().includes(v))    
+      })
+      }else{
+        return this.lessons;
+      }
+    }
+    } // search (filter) by subject and location
+  
+})
+
+
+</script>
+
+</html>

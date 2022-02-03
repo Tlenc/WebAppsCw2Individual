@@ -1,19 +1,41 @@
-var express = require("express");
+var express = require('express');
 var app = express();
-app.get("/random/:min/:max"
-, function(req, res) { // take two parameters
-var min = parseInt(req.params.min);
-var max = parseInt(req.params.max);
-// return an error if either is not a number
-if (isNaN(min) || isNaN(max)) {
-res.status(400);
-res.json({ error: "Bad request." });
-return;
-}
-// calculate and send back the result
-var result = Math.round((Math.random() * (max - min)) + min);
-res.json({ result: result });
+var MongoClient = require('mongodb').MongoClient;
+var str = "";
+
+app.use(express.json());
+app.use(express.static('static'))
+
+const url = "mongodb+srv://Tadas:darkness0@cluster0.ueekk.mongodb.net/test?authSource=admin&replicaSet=atlas-1467xl-shard-0&readPreference=primary&appname=MongoDB+Compass&ssl=true";
+
+app.use(function(req, res, next) {
+  console.log("Request IP: " + req.url);
+  console.log("Request date: " + new Date());
+  next();
 });
-app.listen(3000, function() {
-console.log("Random number API started on port 3000");
-});
+
+
+app.route('/lesson').get( function(req, res)
+
+
+    {
+        MongoClient.connect(url, function(err, db) {
+ 
+            var dbo = db.db("WebAppCw2");
+           
+            dbo.collection("lesson ").find({}).toArray(function(err, result) {
+              if (err) throw err;
+      
+              res.send(result);
+              db.close();
+            });
+          });
+    });
+
+
+    app.use(function(req, res) {
+      res.status(404).send("Page not found!");
+  });
+  
+
+var server = app.listen(3000, function() {}); 
