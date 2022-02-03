@@ -14,7 +14,18 @@ app.use(function(req, res, next) {
   next();
 });
 
-
+app.use(function(req, res, next) {
+  // allow different IP address
+  res.header("Access-Control-Allow-Origin"
+  ,
+  "*");
+  // allow different header fields
+  res.header("Access-Control-Allow-Headers"
+  ,
+  "*");
+  next();
+  });
+  
 app.route('/').get( function(req, res){
   res.send("test");
 });
