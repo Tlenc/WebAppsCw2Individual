@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
 });
 
 
-app.route('/lesson').get( function(req, res){
+app.route('/').get( function(req, res){
   res("test");
 });
 
