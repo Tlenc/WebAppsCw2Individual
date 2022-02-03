@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var MongoClient = require('mongodb').MongoClient;
-var str = "";
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.static('static'))
@@ -38,4 +38,4 @@ app.route('/lesson').get( function(req, res)
   });
   
 
-var server = app.listen(3000, function() {}); 
+app.listen(port);
