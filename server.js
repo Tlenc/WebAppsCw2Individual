@@ -16,7 +16,7 @@ app.use(function(req, res, next) {
 
 
 app.route('/').get( function(req, res){
-  res("test");
+  res.send("test");
 });
 
 
