@@ -52,8 +52,8 @@ app.route('/lesson').get( function(req, res)
         MongoClient.connect(url, function(err, db) {
  
             var dbo = db.db("WebAppCw2");
-           var myObj = "test";
-            dbo.collection("order").insertOne(myObj, function(err, result) {
+
+            dbo.collection("order").insertOne({"name":"Abhishek","marks":100}, function(err, result) {
               if (err) throw err;
               console.log("db updated");
               db.close();
