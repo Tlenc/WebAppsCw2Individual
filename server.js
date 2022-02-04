@@ -52,8 +52,8 @@ app.route('/lesson').get( function(req, res)
     app.post('/order', function requestHandler(req, res) {
       console.log('Post recieved');
       console.log(req.body);
-      const data = req.body;
-      response.json({
+    
+      res.json({
         status: 'Success'
       })
     });
