@@ -74,9 +74,8 @@ app.route('/lesson').get( function(req, res)
 
           var dbo = db.db("WebAppCw2");
          
-          var myquery = { ObjectId: req.body.lessonId };
-          var newvalues = {$set: {space: req.body.spaces} };
-          dbo.collection("lesson ").updateOne(myquery, newvalues, function(err, response) {
+        
+          dbo.collection("lesson ").updateOne({ "_id": req.body.lessonId}, {$set: {"space": req.body.spaces}}, function(err, response) {
           if (err) throw err;
           console.log("1 document updated");
           db.close();
