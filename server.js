@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static('static'))
+app.use(express.static(__dirname + '/static'));
 
 const url = "mongodb+srv://Tadas:darkness0@cluster0.ueekk.mongodb.net/test?authSource=admin&replicaSet=atlas-1467xl-shard-0&readPreference=primary&appname=MongoDB+Compass&ssl=true";
 
