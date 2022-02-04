@@ -48,19 +48,8 @@ app.route('/lesson').get( function(req, res)
           });
     });
 
-    app.post('/order').get( function(req, res)
-    {
-        MongoClient.connect(url, function(err, db) {
- 
-            var dbo = db.db("WebAppCw2");
-            
-            dbo.collection("order").insertOne({"name":"Abhishek","marks":100}, function(err, result) {
-              if (err) throw err;
-              console.log(req);
-              res.send("success");
-              db.close();
-            });
-          });
+    app.post('/', function requestHandler(req, res) {
+      res.end('Hello, World!');
     });
 
     app.use(function(req, res) {
