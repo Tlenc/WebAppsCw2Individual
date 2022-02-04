@@ -70,7 +70,7 @@ app.route('/lesson').get( function(req, res)
           var dbo = db.db("WebAppCw2");
          
         
-          dbo.collection("lesson ").updateOne({ "_id": "61f9fbe2f2d048694050aaf9"}, {$set: {"space": "5"}}, function(err, response) {
+          dbo.collection("lesson ").updateOne({ "_id": "ObjectId('61f9fbe2f2d048694050aaf9')"}, {$set: {"space": "5"}}, function(err, response) {
           if (err) throw err;
           console.log("1 document updated");
           db.close();
