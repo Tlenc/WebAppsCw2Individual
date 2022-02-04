@@ -8,11 +8,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(__dirname + '/static'));
 app.use(cors());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*');
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
 });
 const url = "mongodb+srv://Tadas:darkness0@cluster0.ueekk.mongodb.net/test?authSource=admin&replicaSet=atlas-1467xl-shard-0&readPreference=primary&appname=MongoDB+Compass&ssl=true";
