@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var cors = require('cors')
 var MongoClient = require('mongodb').MongoClient;
 const port = process.env.PORT || 3000;
 
@@ -47,15 +48,15 @@ app.route('/lesson').get( function(req, res)
           });
     });
 
-    app.route('/order').get( function(req, res)
+    app.route('/order', function(req, res)
     {
         MongoClient.connect(url, function(err, db) {
  
             var dbo = db.db("WebAppCw2");
-
+            
             dbo.collection("order").insertOne({"name":"Abhishek","marks":100}, function(err, result) {
               if (err) throw err;
-              console.log("db updated");
+              console.log(req);
               db.close();
             });
           });
