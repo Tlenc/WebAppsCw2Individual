@@ -57,6 +57,7 @@ app.route('/lesson').get( function(req, res)
             dbo.collection("order").insertOne({"name":"Abhishek","marks":100}, function(err, result) {
               if (err) throw err;
               console.log(req);
+              res.send("success");
               db.close();
             });
           });
