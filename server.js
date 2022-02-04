@@ -84,6 +84,25 @@ app.route('/lesson').get( function(req, res)
         })
       });
 
+
+      app.route('/search').get( function(req, res)
+    {
+        MongoClient.connect(url, function(err, db) {
+ 
+            var dbo = db.db("WebAppCw2");
+          
+            dbo.collection("lesson ").find({ $text: { $search: req.body }}).toArray(function(err, result) {
+              if (err) throw err;
+              res.send(result);
+              console.log("Record search successfully");
+              db.close();
+              res.json({
+                status: 'Success'
+              })
+            });
+          });
+    });
+
       
       })});
     app.use(function(req, res) {
