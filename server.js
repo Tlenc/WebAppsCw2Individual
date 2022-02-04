@@ -50,7 +50,7 @@ app.route('/lesson').get( function(req, res)
 
     app.post('/order', function requestHandler(req, res) {
       res.end('Hello, World!');
-      res.end(req);
+     
     });
 
     app.use(function(req, res) {
