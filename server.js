@@ -62,7 +62,8 @@ app.route('/lesson').get( function(req, res)
       res.json({
         status: 'Success'
       })
-      })
+      });
+
       app.put('/update', function requestHandler(req, res) {
         console.log('Put recieved');
         console.log(req.body);
@@ -77,7 +78,9 @@ app.route('/lesson').get( function(req, res)
           if (err) throw err;
           console.log("1 document updated");
           db.close();
-  
+  res.json({
+        status: 'Success'
+      })
         })
         
         })});
