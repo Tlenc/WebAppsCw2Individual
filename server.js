@@ -68,11 +68,14 @@ app.route('/lesson').get( function(req, res)
         MongoClient.connect(url, function(err, db) {
 
           var dbo = db.db("WebAppCw2");
-         
+          var query = { subject : "Maths" };
+       
+          var data = { $set : {subject : "Math" } }
         
-          dbo.collection("lesson ").updateOne({ "_id": "ObjectId('61f9fbe2f2d048694050aaf9')"}, {$set: {"space": "5"}}, function(err, response) {
+          dbo.collection("lesson ").updateOne(query,data, (err, collection) => {
           if (err) throw err;
-          console.log("1 document updated");
+          console.log("Record updated successfully");
+          console.log(collection);
           db.close();
           res.json({
           status: 'Success'
