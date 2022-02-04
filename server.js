@@ -76,7 +76,7 @@ app.route('/lesson').get( function(req, res)
          
           var myquery = { _id: req.body.lessonId };
           var newvalues = {$set: {space: req.body.spaces} };
-          dbo.collection("lesson ").updateOne(myquery, newvalues, function(err, res) {
+          dbo.collection("lesson ").updateOne(myquery, newvalues, function(err, response) {
           if (err) throw err;
           console.log("1 document updated");
           db.close();
