@@ -85,10 +85,8 @@ app.route('/lesson').get( function(req, res)
       });
 
 
-      app.route('/search/:text').get( function(req, res)
-    {
+      app.get('/search/:text').get( function(req, res){
         MongoClient.connect(url, function(err, db) {
- 
             var dbo = db.db("WebAppCw2");
             var text = req.params.text;
             console.log(text);
