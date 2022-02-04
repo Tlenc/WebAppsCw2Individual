@@ -70,7 +70,7 @@ app.route('/lesson').get( function(req, res)
           var dbo = db.db("WebAppCw2");
           var ObjectId = require('mongodb').ObjectID;
 
-          var query = { _id :ObjectId("lessonId") };
+          var query = { _id :ObjectId(req.body.lessonId) };
        
           var data = { $set : {space : req.body.space } }
         
