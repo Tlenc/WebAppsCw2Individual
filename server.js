@@ -54,7 +54,7 @@ app.route('/lesson').get( function(req, res)
       console.log(req.body);
       const data = req.body;
       response.json({
-        status: 'Success',
+        status: 'Success'
       })
     });
 
