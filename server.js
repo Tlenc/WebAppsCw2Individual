@@ -63,6 +63,24 @@ app.route('/lesson').get( function(req, res)
         status: 'Success'
       })
       })
+      app.put('/update', function requestHandler(req, res) {
+        console.log('Put recieved');
+        console.log(req.body);
+        
+        MongoClient.connect(url, function(err, db) {
+
+          var dbo = db.db("WebAppCw2");
+         
+          var myquery = { _id: req.body.lessonId };
+          var newvalues = {$set: {space: req.body.spaces} };
+          dbo.collection("lesson ").updateOne(myquery, newvalues, function(err, res) {
+          if (err) throw err;
+          console.log("1 document updated");
+          db.close();
+  
+        })
+        
+        })});
       })});
 
     app.use(function(req, res) {
