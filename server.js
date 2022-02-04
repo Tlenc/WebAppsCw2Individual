@@ -91,6 +91,7 @@ app.route('/lesson').get( function(req, res)
  
             var dbo = db.db("WebAppCw2");
             var text = req.params.text;
+            console.log(text);
             dbo.collection("lesson ").find({ $text: { $search: text }}).toArray(function(err, result) {
               if (err) throw err;
               res.send(result);
