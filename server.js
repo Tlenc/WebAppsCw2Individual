@@ -64,6 +64,8 @@ app.route('/lesson').get( function(req, res)
       })
       });
 
+      
+      })});
       app.put('/update', function requestHandler(req, res) {
         console.log('Put recieved');
         console.log(req.body);
@@ -84,8 +86,6 @@ app.route('/lesson').get( function(req, res)
         })
         
         })});
-      })});
-
     app.use(function(req, res) {
       res.status(404).send("Page not found!");
   });
