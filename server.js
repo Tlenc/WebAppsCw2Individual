@@ -68,9 +68,9 @@ app.route('/lesson').get( function(req, res)
         MongoClient.connect(url, function(err, db) {
 
           var dbo = db.db("WebAppCw2");
-          var query = { subject : "Maths" };
+          var query = { _id : req.body.lessonId };
        
-          var data = { $set : {subject : "Math" } }
+          var data = { $set : {space : req.body.space } }
         
           dbo.collection("lesson ").updateOne(query,data, (err, collection) => {
           if (err) throw err;
