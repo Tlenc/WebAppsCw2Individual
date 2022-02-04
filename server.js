@@ -80,12 +80,13 @@ app.route('/lesson').get( function(req, res)
           if (err) throw err;
           console.log("1 document updated");
           db.close();
-  res.json({
-        status: 'Success'
-      })
+          res.json({
+          status: 'Success'
         })
-        
-        })});
+      });
+
+      
+      })});
     app.use(function(req, res) {
       res.status(404).send("Page not found!");
   });
