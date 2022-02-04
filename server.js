@@ -33,8 +33,6 @@ app.route('/').get( function(req, res){
 
 
 app.route('/lesson').get( function(req, res)
-
-
     {
         MongoClient.connect(url, function(err, db) {
  
@@ -49,6 +47,19 @@ app.route('/lesson').get( function(req, res)
           });
     });
 
+    app.route('/order').get( function(req, res)
+    {
+        MongoClient.connect(url, function(err, db) {
+ 
+            var dbo = db.db("WebAppCw2");
+           var myObj = "test";
+            dbo.collection("order").insertOne(myObj, function(err, result) {
+              if (err) throw err;
+              console.log("db updated");
+              db.close();
+            });
+          });
+    });
 
     app.use(function(req, res) {
       res.status(404).send("Page not found!");
