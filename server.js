@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var cors = require('cors')
 var MongoClient = require('mongodb').MongoClient;
-const { response } = require('express');
+
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -18,13 +18,9 @@ app.use(function(req, res, next) {
 
 app.use(function(req, res, next) {
   // allow different IP address
-  res.header("Access-Control-Allow-Origin"
-  ,
-  "*");
+  res.header("Access-Control-Allow-Origin","*");
   // allow different header fields
-  res.header("Access-Control-Allow-Headers"
-  ,
-  "*");
+  res.header("Access-Control-Allow-Headers","*");
   next();
   });
   
