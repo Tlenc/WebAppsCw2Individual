@@ -51,7 +51,7 @@ app.route('/lesson').get( function(req, res)
  
         var dbo = db.db("WebAppCw2");
        
-        dbo.collection("order").insertOne( req.body, function(err, result) {
+        dbo.collection("order").insertOne( req.body.lessonId[0], function(err, result) {
           if (err) throw err;
           db.close();
       res.json({
