@@ -48,7 +48,7 @@ app.route('/lesson').get( function(req, res)
           });
     });
 
-    app.route('/order', function(req, res)
+    app.route('/order').get( function(req, res)
     {
         MongoClient.connect(url, function(err, db) {
  
