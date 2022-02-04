@@ -68,7 +68,7 @@ app.route('/lesson').get( function(req, res)
         MongoClient.connect(url, function(err, db) {
 
           var dbo = db.db("WebAppCw2");
-          var query = { _id : req.body.lessonId };
+          var query = { _id :ObjectId("req.body.lessonId") };
        
           var data = { $set : {space : req.body.space } }
         
