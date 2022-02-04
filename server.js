@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var cors = require('cors')
 var MongoClient = require('mongodb').MongoClient;
+const { response } = require('express');
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -49,8 +50,12 @@ app.route('/lesson').get( function(req, res)
     });
 
     app.post('/order', function requestHandler(req, res) {
-      res.end('Hello, World!');
-      res.end(req.body);
+      console.log('Post recieved');
+      console.log(req.body);
+      const data = req.body;
+      response.json({
+        status: 'Success',
+      })
     });
 
     app.use(function(req, res) {
