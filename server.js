@@ -62,7 +62,8 @@ app.route('/lesson').get( function(req, res)
       res.json({
         status: 'Success'
       })
-    });
+      })
+      })});
 
     app.use(function(req, res) {
       res.status(404).send("Page not found!");
