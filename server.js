@@ -52,7 +52,13 @@ app.route('/lesson').get( function(req, res)
     app.post('/order', function requestHandler(req, res) {
       console.log('Post recieved');
       console.log(req.body);
-    
+      MongoClient.connect(url, function(err, db) {
+ 
+        var dbo = db.db("WebAppCw2");
+       
+        dbo.collection("order").insertOne( req.body, function(err, result) {
+          if (err) throw err;
+          db.close();
       res.json({
         status: 'Success'
       })
