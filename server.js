@@ -48,7 +48,7 @@ app.route('/lesson').get( function(req, res)
           });
     });
 
-    app.post('/', function requestHandler(req, res) {
+    app.post('/order', function requestHandler(req, res) {
       res.end('Hello, World!');
     });
 
